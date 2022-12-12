@@ -28,3 +28,15 @@
 
 // Custom Variables
 @import "soft-ui-dashboard/custom/styles";
+
+.modal {
+    z-index:5000 !important;
+}
+
+.sidenav {
+    z-index:0 !important;
+}
+
+.swal2-container {
+    z-index:6000 !important;
+}

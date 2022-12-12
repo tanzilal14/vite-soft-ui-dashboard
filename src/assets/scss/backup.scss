@@ -1,0 +1,95 @@
+.dashedbox {
+  box-sizing: border-box;
+  background: #b7f47d;
+  border: 0.5px dashed #006a4b;
+  border-radius: 7px;
+  color: #0b2000;
+}
+.box-test-sub label {
+  width: calc(100% - 1.25rem);
+}
+
+.box-test-sub-1 label {
+  width: calc(100% - 1.25rem);
+}
+
+// .box-test-sub-1-two-column label {
+//   min-width: 3rem;
+// }
+
+.hr {
+  width: 80%;
+  margin: 0 auto;
+}
+
+input:not(#not_using):checked ~ label {
+  background: #006a4b;
+  color: white;
+}
+input:not(#not_using):checked:hover ~ label {
+  background: #006a4b;
+  color: white;
+}
+
+.button-title {
+  border: 0.5px solid #707973;
+  border-radius: 8px;
+}
+
+.button-title:hover {
+  cursor: pointer;
+}
+.button-sub {
+  border: 0.5px solid #707973;
+  border-radius: 8px;
+  color: #a9acac;
+}
+
+.button-sub:hover {
+  cursor: pointer;
+}
+
+.input-sub:not(#not_using):checked ~ label {
+  background: #b7f47d;
+  color: #0b2000;
+  border: 0.5px solid #0b2000;
+  border-radius: 7px;
+}
+.input-sub:not(#not_using):checked:hover ~ label {
+  background: #b7f47d;
+  color: #0b2000;
+  border: 0.5px solid #0b2000;
+  border-radius: 7px;
+}
+
+.button-title {
+  border: 0.5px solid #707973;
+  border-radius: 8px;
+}
+
+.button-title-custom {
+  border: 0.5px solid #707973;
+  border-radius: 8px;
+  min-width: 100%;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.button-sub-custom {
+  border: 0.5px solid #707973;
+  border-radius: 8px;
+  color: #a9acac;
+  min-width: 100%;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.button-sub-pgex {
+  border: 0.5px solid #707973;
+  border-radius: 8px;
+  color: #a9acac;
+  min-width: 100%;
+  &:hover {
+    cursor: pointer;
+  }
+}

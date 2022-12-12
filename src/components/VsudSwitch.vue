@@ -6,7 +6,8 @@
       :class="inputClass"
       type="checkbox"
       :name="name"
-      :checked="checked"
+      :checked="modelValue"
+      @input="$emit('update:modelValue', $event.target.checked)"
     />
     <label class="form-check-label" :class="labelClass" :for="id">
       <slot />
@@ -26,9 +27,9 @@ export default {
       type: String,
       default: ""
     },
-    checked: {
-      type: String,
-      default: ""
+    modelValue: {
+      type: Boolean,
+      default: false
     },
     labelClass: {
       type: String,

@@ -20,21 +20,25 @@
     />
     <router-view />
     <app-footer v-show="$store.state.showFooter" />
-    <configurator
+    <!-- <configurator
       :toggle="toggleConfigurator"
       :class="[
         $store.state.showConfig ? 'show' : '',
         $store.state.hideConfigButton ? 'd-none' : '',
       ]"
-    />
+    /> -->
   </main>
+  <place-browser ref="placebrowser"></place-browser>
 </template>
 <script>
-import Sidenav from "./examples/Sidenav/index.vue";
+import { defineComponent, ref,provide, onMounted } from 'vue'
+import Sidenav from "./views/layout/Sidenav/index.vue";
 import Configurator from "@/examples/Configurator.vue";
 import Navbar from "@/examples/Navbars/Navbar.vue";
 import AppFooter from "@/examples/Footer.vue";
 import { mapMutations } from "vuex";
+import PlaceBrowser from './views/components/PlaceBrowser.vue';
+
 export default {
   name: "App",
   components: {
@@ -42,6 +46,7 @@ export default {
     Configurator,
     Navbar,
     AppFooter,
+    PlaceBrowser,
   },
 
   computed: {
@@ -56,7 +61,10 @@ export default {
     },
   },
   beforeMount() {
-    this.$store.state.isTransparent = "bg-transparent";
+    // this.$store.state.isTransparent = "bg-transparent";
+  },
+  mounted(){
+      this.$root.$placebrowser = this.$refs.placebrowser.open;
   },
   methods: {
     ...mapMutations(["toggleConfigurator", "navbarMinimize"]),

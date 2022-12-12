@@ -4,25 +4,38 @@
       <span v-if="iconDir === 'left'" class="input-group-text">
         <i :class="getIcon(icon)"></i>
       </span>
-      <input
+      <Field
         :id="id"
         :type="type"
         class="form-control"
         :class="getClasses(size, valid)"
         :name="name"
-        :value="value"
         :placeholder="placeholder"
-        :isRequired="isRequired"
+        @input="$emit('update:modelValue', $event.target.value)"
       />
       <span v-if="iconDir === 'right'" class="input-group-text">
         <i :class="getIcon(icon)"></i>
       </span>
     </div>
+    <div v-if="error" style="display:inline;" class="invalid-feedback">
+      {{error}}
+    </div>
   </div>
 </template>
 
 <script>
+import { ErrorMessage,Field } from 'vee-validate';
+
 export default {
+  components:{
+    Field,
+    ErrorMessage
+  },
+  data(){
+    return {
+      
+    }
+  },
   name: "VsudInput",
   props: {
     size: {
@@ -58,6 +71,10 @@ export default {
       default: ""
     },
     type: {
+      type: String,
+      default: ""
+    },
+    error: {
       type: String,
       default: ""
     },

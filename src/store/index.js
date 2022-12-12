@@ -5,18 +5,36 @@ export default createStore({
     hideConfigButton: false,
     isPinned: true,
     showConfig: false,
-    isTransparent: "",
+    isTransparent: "bg-white",
     isRTL: false,
     mcolor: "",
-    isNavFixed: false,
+    isNavFixed: true,
     isAbsolute: false,
     showNavs: true,
     showSidenav: true,
     showNavbar: true,
     showFooter: true,
     showMain: true,
+    currentNamePage: [],
+    currentUrlPage: [],
+    token: localStorage.getItem("token") || null,
+    user: localStorage.getItem("user") || null,
+    histologi: {
+      feed: {},
+      form: {},
+    },
+    update_histologi: {},
   },
   mutations: {
+    SET_HISTOLOGI_FEED(state, payload) {
+      state.histologi.feed = payload;
+    },
+    SET_TOKEN(state, payload) {
+      state.token = payload;
+    },
+    SET_USER(state, payload) {
+      state.user = payload;
+    },
     toggleConfigurator(state) {
       state.showConfig = !state.showConfig;
     },
@@ -48,11 +66,31 @@ export default createStore({
         state.isNavFixed = false;
       }
     },
+    setNamePage(state, payload) {
+      state.currentNamePage = payload;
+    },
+    setUrlPage(state, payload) {
+      state.currentUrlPage = payload;
+    },
   },
   actions: {
     toggleSidebarColor({ commit }, payload) {
       commit("sidebarType", payload);
     },
   },
-  getters: {},
+  getters: {
+    token(state) {
+      return state.token;
+    },
+    user(state) {
+      if (state.user != null) return JSON.parse(state.user);
+      return state.user;
+    },
+    getNamePage(state) {
+      return state.currentNamePage;
+    },
+    getUrlPage(state) {
+      return state.currentUrlPage;
+    },
+  },
 });

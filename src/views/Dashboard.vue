@@ -160,6 +160,7 @@ import US from "../assets/img/icons/flags/US.png";
 import DE from "../assets/img/icons/flags/DE.png";
 import GB from "../assets/img/icons/flags/GB.png";
 import BR from "../assets/img/icons/flags/BR.png";
+import * as qm from "../graphqlquery";
 
 export default {
   name: "DashboardDefault",
@@ -231,6 +232,24 @@ export default {
         },
       },
     };
+  },
+
+  beforeMount() {
+    this.$apollo
+      .query({
+        query: qm.ME,
+        variables: {
+          id: this.$store.getters.user.id,
+        },
+      })
+      .then((result) => {
+        console.info(result);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    this.$store.state.currentNamePage = [""];
+    this.$store.state.currentUrlPage = [""];
   },
 };
 </script>
