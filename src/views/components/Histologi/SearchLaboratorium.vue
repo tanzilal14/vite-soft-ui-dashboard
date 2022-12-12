@@ -5,10 +5,11 @@
     <div class="card p-2">
       <div class="input-group">
         <v-select
-          v-model="data.name"
+          v-model="data"
           class="bg-white"
-          :options="makeList(labs, 'name')"
+          :options="labs"
           :required="true"
+          label="name"
           @search="onSearchLab"
         >
           <template #search="{ attributes, events }">
@@ -62,7 +63,7 @@ export default {
     data(newData, oldData) {
       var chosenData = {};
       this.labs.forEach((item) => {
-        if (newData == item.name) {
+        if (newData.name == item.name) {
           chosenData = item;
           this.$emit("input", chosenData, this.nameVar);
         }
@@ -78,7 +79,7 @@ export default {
     },
   },
   mounted() {
-    // this.data = this.dataSource;
+    this.data = this.dataSource;
   },
   beforeMount() {
     this.fetchLab();

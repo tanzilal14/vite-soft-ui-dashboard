@@ -1,5 +1,5 @@
 <template>
-  <pre class="d-none">
+  <pre class="">
     {{ data }}
   </pre>
   <div class="py-4 container-fluid">
@@ -215,9 +215,13 @@ export default {
       this.data.clinicianInformation = [...this.dataEdit.getClinicians];
       this.data.lab = { ...this.dataEdit.lab };
       this.data.customerinformation = this.dataEdit.customer;
+      this.dataPatient = this.data.patientInformation;
 
-      // this.updateClinician = false;
+      this.updateClinician = false;
     }
+
+    // this.dataPatient = this.data.patientInformation;
+    // this.data.patientInformation = this.dataPatient;
   },
   methods: {
     submitForm() {
@@ -225,7 +229,11 @@ export default {
     },
     formAction() {
       // this.fetchData();
-      alert("all validated");
+      // alert("all validated");
+      this.$store.state.histologi.feed = this.data;
+      this.$store.state.update_histologi = this.dataEdit;
+
+      this.$router.push("/histologi-request");
     },
     move() {
       this.$store.state.histologi.feed = this.data;

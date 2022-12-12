@@ -793,9 +793,25 @@ export const FEEDER_TRANSACTION = gql`
           id
           name
         }
-        # histology {
-        #   id
-        # }
+        histology {
+          as_clinical_diagnosis
+          as_main_symptom_n_desc_of_the_disease
+          as_prev_cytology_or_histopathology_testing_result
+          id
+          other_order_or_comment
+          rf_contraception
+          rf_notes
+          rf_result_reporting_email
+          rf_result_reporting_method
+          si_collection_method
+          si_fixation_reagent
+          si_fixation_reagent_other
+          si_operation_time
+          si_time_start_fixation
+          si_time_tissue_take_out
+          si_tissue_location
+          tnc
+        }
 
         id
         iuo_courier

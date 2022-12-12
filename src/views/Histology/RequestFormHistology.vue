@@ -1,5 +1,12 @@
 <template>
   <div class="py-4 container-fluid">
+    <!-- <pre>
+    {{ update_histologi }}
+    </pre>
+    <pre>
+    {{ data }}
+  </pre
+    > -->
     <div id="swalFormRequest" class="card d-none">
       <div class="card-header bg-primary">
         <div class="row">
@@ -286,6 +293,9 @@
         <div v-if="load_product">
           <card-box title="Test(s) Requested">
             <template #content>
+              <pre>
+                {{ data.getProducts }}
+              </pre>
               <div class="row">
                 <div class="col-md-8">
                   <div class="col">
@@ -305,6 +315,7 @@
                 </div>
                 <div class="col-md-6">
                   <MultiSelect
+                    :listProduct="data.getProducts"
                     :item="product_list.getProducts[0]"
                     :multi-column="{
                       4: ['col-md-3', '5rem'],
@@ -316,12 +327,14 @@
                 </div>
                 <div class="col-md-6">
                   <MultiSelect
+                    :listProduct="data.getProducts"
                     :item="product_list.getProducts[1]"
                     :multi-column="{}"
                     name-var="vries"
                     @changeMain="updateData"
                   />
                   <MultiSelect
+                    :listProduct="data.getProducts"
                     :item="product_list.getProducts[2]"
                     :multi-column="{}"
                     :class-list="['button-title', 'button-title', 'button-sub']"
@@ -576,6 +589,7 @@ import TimeInput from "@/views/components/Input/TimeInput.vue";
 import MultiRadio from "@/views/components/Input/MultiRadio.vue";
 import TextAreaInput from "@/views/components/Input/TextAreaInput.vue";
 import CardBox from "@/views/components/Layout/CardBox.vue";
+import MultiSelectInput from "@/views/components/Layout/MultiSelectInput.vue";
 import MultiSelect from "@/views/components/Layout/MultiSelect.vue";
 import TextInputSingle from "@/views/components/Input/TextInputSingle.vue";
 import RadioInputSingle from "@/views/components/Input/RadioInputSingle.vue";
@@ -596,6 +610,7 @@ export default {
     RadioInputSingle,
     TextInputSingle,
     MultiSelect,
+    MultiSelectInput,
   },
 
   setup() {},
@@ -618,7 +633,7 @@ export default {
         start_fixation_end: 0,
         fixation_reagent: "",
         fixation_reagent_others: "",
-
+        getProducts: [],
         pathological: {
           main: {
             select: "",
@@ -681,14 +696,119 @@ export default {
     };
   },
   computed: {
-    ...mapState(["histologi"]),
+    ...mapState(["histologi", "update_histologi"]),
+  },
+  beforeMount() {
+    this.update_histologi = this.$store.state.update_histologi;
+    if (Object.keys(this.update_histologi).length !== 0) {
+      this.data = {
+        note: this.update_histologi.histology.rf_notes,
+        contraception: this.update_histologi.histology.rf_contraception,
+        result_reporting_method:
+          this.update_histologi.histology.rf_result_reporting_method,
+        result_reporting_method_email:
+          this.update_histologi.histology.rf_result_reporting_email,
+        tissue: this.update_histologi.histology.si_tissue_location,
+        collecting_method: this.update_histologi.histology.si_collection_method,
+        collecting_method_others: this.update_histologi.histology.rf_notes,
+        operation_time_start: this.update_histologi.histology.si_operation_time,
+        operation_time_end: this.update_histologi.histology.si_operation_time,
+        tissue_taken_start:
+          this.update_histologi.histology.si_time_tissue_take_out,
+        tissue_taken_end:
+          this.update_histologi.histology.si_time_tissue_take_out,
+        start_fixation_start:
+          this.update_histologi.histology.si_time_start_fixation,
+        start_fixation_end:
+          this.update_histologi.histology.si_time_start_fixation,
+        fixation_reagent: this.update_histologi.histology.si_fixation_reagent,
+        fixation_reagent_others:
+          this.update_histologi.histology.si_fixation_reagent_other,
+        getProducts: this.makeList(this.update_histologi.getProducts, "id"),
+        pathological: {
+          main: {
+            select: "",
+            select_text: "",
+          },
+          sub: {
+            select: "",
+            select_text: "",
+          },
+          sub2: {
+            select: "",
+            select_text: "",
+          },
+        },
+        vries: {
+          main: {
+            select: "",
+            select_text: "",
+          },
+          sub: {
+            select: "",
+            select_text: "",
+          },
+          sub2: {
+            select: "",
+            select_text: "",
+          },
+        },
+        additional: {
+          main: {
+            select: "",
+            select_text: "",
+          },
+          sub: {
+            select: "",
+            select_text: "",
+          },
+          sub2: {
+            select: "",
+            select_text: "",
+          },
+        },
+        check_using_kalgen: this.update_histologi.histology.rf_notes,
+        clinical_diagnosis:
+          this.update_histologi.histology.as_clinical_diagnosis,
+        main_symptom:
+          this.update_histologi.histology.as_main_symptom_n_desc_of_the_disease,
+        previous_cytology:
+          this.update_histologi.histology
+            .as_prev_cytology_or_histopathology_testing_result,
+        patient_type: this.update_histologi.iuo_patient_type,
+        patient_text: this.update_histologi.iuo_patient_type_others,
+        order_type: this.update_histologi.iuo_order_type,
+        sample_type: this.update_histologi.iuo_sample_receiving_condition,
+        sample_text:
+          this.update_histologi.iuo_sample_receiving_condition_details,
+        courier: this.update_histologi.iuo_courier,
+        receiver: this.update_histologi.iuo_receiver,
+        innolab_id: this.update_histologi.iuo_innolab_id,
+        other_text: this.update_histologi.histology.other_order_or_comment,
+      };
+    }
   },
   created() {
+    this.histologi_feed = this.$store.state.histologi.feed;
+    if (Object.keys(this.histologi_feed).length === 0) {
+      this.$router.push("/histologi");
+    }
     this.fetchProducts();
   },
   methods: {
     async createTransactionFeeder() {
       var self = this;
+      let getProductList = this.extractProduct([
+        this.data.pathological.main.select,
+        this.data.pathological.sub.select,
+        this.data.pathological.sub2.select,
+        this.data.vries.main.select,
+        this.data.vries.sub.select,
+        this.data.vries.sub2.select,
+        this.data.additional.main.select,
+        this.data.additional.sub.select,
+        this.data.additional.sub2.select,
+      ]);
       await self.$apollo
         .mutate({
           mutation: qm.FEEDER_TRANSACTION_HISTOLOGI_CREATE,
@@ -719,20 +839,16 @@ export default {
                 iuo_patient_type: this.data.patient_type,
                 iuo_order_type: this.data.order_type,
                 iuo_sample_receiving_condition: this.data.sample_type,
-                products: [
-                  this.extractId(this.data.pathological.main.select),
-                  this.extractId(this.data.pathological.sub.select),
-                  this.extractId(this.data.vries.main.select),
-                  this.extractId(this.data.vries.sub.select),
-                  this.extractId(this.data.additional.sub.select),
-                ],
+                products: getProductList,
               },
           },
         })
         .then((result) => {
-          // console.log(JSON.parse(JSON.stringify(result)));
+          console.log(JSON.parse(JSON.stringify(result)));
           this.idTransaction = result.data.feederTransactionCreate[0].id;
-          this.createTransactionHistologyFeeder();
+          if (this.idTransaction) {
+            this.createTransactionHistologyFeeder();
+          }
           // self.$swal.fire("Success", "Data Saved Successfuly", "success");
         })
         .catch((error) => {
@@ -757,7 +873,9 @@ export default {
                 rf_result_reporting_email:
                   this.data.result_reporting_method_email,
                 si_tissue_location: this.data.tissue,
-                si_collection_method: [this.data.collecting_method],
+                si_collection_method: this.extractList(
+                  this.data.collecting_method
+                ),
                 si_operation_time: this.makeTime(
                   this.data.operation_time_start
                 ),

@@ -202,7 +202,28 @@ app.config.globalProperties.extractId = (data) => {
   };
 };
 app.config.globalProperties.makeTime = (data) => {
-  return data + ":00";
+  if (data.length === 5) {
+    return data + ":00";
+  } else {
+    return data;
+  }
+};
+app.config.globalProperties.extractList = (data) => {
+  if (typeof data === "string") {
+    return [...data.split()];
+  } else {
+    return [...data];
+  }
+};
+app.config.globalProperties.extractProduct = (data) => {
+  let newData = [];
+  data.forEach((item) => {
+    if (Object.keys(item).length !== 0) {
+      newData.push({ product_id: item.id });
+    }
+  });
+
+  return newData;
 };
 
 app.mount("#app");

@@ -470,6 +470,9 @@ export default {
           query: qm.FEEDER_TRANSACTION,
           variables: {
             filter: {
+              histology: {
+                rf_notes: { iLike: "%%" },
+              },
               patient: {
                 name: { iLike: `%${this.data.name}%` },
                 medicalRecordNumber: {

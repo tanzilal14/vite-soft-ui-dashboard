@@ -1,22 +1,14 @@
 <template>
-  <pre wrap>
-    {{ item.id }}
-  </pre>
-  <div v-if="!item.selectable">
-    <p>{{ item.name }}</p>
-  </div>
-  <div v-else-if="item.selectable" class="">
-    <div v-if="!item.qtyable">
+  <div class="">
+    <div v-for="(item, index) in listData.slice(0, -1)" :key="index">
       <input
         :id="makeId(item.name + parentName + index)"
         v-model="data.select"
         :name="radioChoose"
         type="radio"
         hidden
-        :checked="listProduct.includes(item.id)"
         :value="item"
-        :class="buttonClass == 'button-sub' ? 'input-sub' : ''"
-        @change="reset"
+        class=""
       />
       <label
         :for="makeId(item.name + parentName + index)"
@@ -34,17 +26,15 @@
         <strong>{{ item.name }}</strong>
       </label>
     </div>
-    <div v-if="item.qtyable" class="d-flex justify-content-start">
+    <div v-if="qtyable" class="d-flex justify-content-start">
       <input
         :id="`${makeId(item.name + parentName + index)}`"
         v-model="data.select"
         :name="radioChoose"
         type="radio"
         hidden
-        :checked="listProduct.includes(item.id)"
         :value="item"
-        :class="buttonClass == 'button-sub' ? 'input-sub' : ''"
-        @change="reset"
+        class=""
       />
       <label
         :for="`${makeId(item.name + parentName + index)}`"
@@ -62,16 +52,16 @@
       </label>
 
       <input
-        @input="
-          (e) => {
-            data.select_text = e.target.value;
-          }
-        "
         :name="radioChoose"
         :disabled="disabled_text"
         type="text"
         style="width: 10vw; height: min-content"
         class="form-control ms-4"
+        @input="
+          (e) => {
+            data.select_text = e.target.value;
+          }
+        "
       />
     </div>
   </div>
@@ -79,25 +69,22 @@
 
 <script>
 export default {
-  name: "MultiSelectComponent",
+  name: "MultiSelectInput",
   // props: ["parentName", "item", "nameVar", "buttonClass"],
   props: {
+    qtyable: {
+      type: Boolean,
+      default: false,
+    },
     parentName: {
       type: String,
       default: "",
     },
-    item: {
+    listData: {
       type: Object,
       default: () => {},
     },
-    listProduct: {
-      type: Object,
-      default: () => {},
-    },
-    index: {
-      type: Number,
-      default: 0,
-    },
+
     dataSource: {
       type: Object,
       default: () => {},
@@ -108,7 +95,7 @@ export default {
     },
     buttonClass: {
       type: String,
-      default: "button-title",
+      default: "btn",
     },
     multiColumn: {
       type: String,
@@ -127,9 +114,7 @@ export default {
   },
   computed: {
     radioChoose() {
-      return this.buttonClass == "button-sub"
-        ? "title" + this.makeId(this.parentName)
-        : "sub" + this.makeId(this.parentName);
+      return "input_" + this.makeId(this.parentName);
     },
   },
   watch: {
@@ -150,22 +135,7 @@ export default {
       immediate: true,
     },
   },
-  methods: {
-    reset() {
-      // if (e.target.checked == false) {
-      //   this.data = {
-      //     select: "",
-      //     select_text: "",
-      //   };
-      // }
-      // this.data = {
-      //   select: "",
-      //   select_text: "",
-      // };
-      // console.log(e.target.checked);
-      // console.log(JSON.parse(JSON.stringify(e)));
-    },
-  },
+  methods: {},
 };
 </script>
 

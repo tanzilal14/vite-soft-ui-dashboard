@@ -5,6 +5,7 @@
   <div v-for="(item2, index2) in item.children" :key="index2" class="">
     <div class="ms-2">
       <MultiSelectComponent
+        :listProduct="listProduct"
         :parent-name="item.name"
         :item="item2"
         :index="index2"
@@ -25,6 +26,7 @@
       >
         <div class="ms-4">
           <MultiSelectComponent
+            :listProduct="listProduct"
             :parent-name="item.name"
             :item="item3"
             :index="index3"
@@ -42,6 +44,7 @@
           <div v-for="(item4, index4) in item3.children" :key="index4" class="">
             <div class="ms-6">
               <MultiSelectComponent
+                :listProduct="listProduct"
                 :parent-name="item.name"
                 :item="item4"
                 :index="index4"
@@ -69,6 +72,10 @@ export default {
   // props: ["parent"],
   props: {
     item: {
+      type: Object,
+      default: () => {},
+    },
+    listProduct: {
       type: Object,
       default: () => {},
     },
